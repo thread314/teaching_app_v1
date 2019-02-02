@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @cardstate.user_id %>
+</p>
+
+<p>
+  <strong>Card:</strong>
+  <%= @cardstate.card_id %>
+</p>
+
+<p>
+  <strong>Delay:</strong>
+  <%= @cardstate.delay %>
+</p>
+
+<p>
+  <strong>Due:</strong>
+  <%= @cardstate.due %>
+</p>
+
+<%= link_to 'Edit', edit_cardstate_path(@cardstate) %> |
+<%= link_to 'Back', cardstates_path %>
