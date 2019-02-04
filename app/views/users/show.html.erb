@@ -11,11 +11,16 @@
 
 <p>
   <strong>Study this</strong>
-  <%= a = @cardsforreview.sample.card
-  ar = [a.term_a,a.term_b].shuffle
-  ar[0] %> 
-  X 
-  <%= ar[1] %>
+  <%= 
+  if @cardsforreview.empty?
+    "You're all finished with study for today."
+  else
+    a = @cardsforreview.sample.card
+    ar = [a.term_a,a.term_b].shuffle
+    "#{ar[0]} X #{ar[1]}"
+  end
+
+  %> 
 </p>
 
 <%= link_to 'Back', users_path %>

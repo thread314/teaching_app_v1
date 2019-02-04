@@ -16,7 +16,6 @@ class UsersController < ApplicationController
         @user.save
 
         #Determine how many new cards need to be added
-        #@user = User.first
         newcardsneeded = 6
         @user.cardstates.each do |card|
             if card.due.nil?
