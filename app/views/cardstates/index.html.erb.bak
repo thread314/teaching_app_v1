@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Cardstates</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Card</th>
+      <th>Delay</th>
+      <th>Due</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @cardstates.each do |cardstate| %>
+      <tr>
+        <td><%= cardstate.user_id %></td>
+        <td><%= cardstate.card_id %></td>
+        <td><%= cardstate.delay %></td>
+        <td><%= cardstate.due %></td>
+        <td><%= link_to 'Show', cardstate %></td>
+        <td><%= link_to 'Edit', edit_cardstate_path(cardstate) %></td>
+        <td><%= link_to 'Destroy', cardstate, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Cardstate', new_cardstate_path %>

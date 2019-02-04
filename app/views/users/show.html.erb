@@ -1,13 +1,7 @@
-<p id="notice"><%= notice %></p>
+<p id="notice">Time to study!<%= notice %></p>
 
 <p>
-  <strong>Name:</strong>
   <%= @user.name %>
-</p>
-
-<p>
-  <strong>Email:</strong>
-  <%= @user.email %>
 </p>
 
 <p>
@@ -15,5 +9,13 @@
   <%= @user.lastreviewed %>
 </p>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
+<p>
+  <strong>Study this</strong>
+  <%= a = @cardsforreview.sample.card
+  ar = [a.term_a,a.term_b].shuffle
+  ar[0] %> 
+  X 
+  <%= ar[1] %>
+</p>
+
 <%= link_to 'Back', users_path %>

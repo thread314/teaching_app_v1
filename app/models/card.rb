@@ -1,3 +1,3 @@
 class Card < ApplicationRecord
-    has_many :card_states
+    has_many :cardstates
 end
