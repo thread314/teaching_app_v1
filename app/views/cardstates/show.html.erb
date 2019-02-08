@@ -1,5 +1,44 @@
 <p id="notice"><%= notice %></p>
 
+<%= 
+if !params[:answer].nil?
+  "Your answer was #{params[:answer]}" 
+end 
+%>
+<BR> 
+
+<%=
+#start from here
+d = Card.find(@cardstate.card_id) 
+correct_answer = d[:term_a] * d[:term_b]
+
+#If user got the answer right
+if params[:answer].to_i == correct_answer
+    if @cardstate.delay.nil?
+        @cardstate.delay = 0.5
+        @cardstate.save
+        "Correct!"
+    else
+        @cardstate.delay *= 2
+        puts "delay is #{@cardstate.delay}"
+        @cardstate.due = Date.today + @cardstate.delay
+        puts "due is #{@cardstate.due}"
+        @cardstate.save
+        "Correct!"
+    end
+#If user did not get the answer right
+else
+    @cardstate.due = ""
+    @cardstate.delay = ""
+    @cardstate.save
+    "Incorrect"
+end
+
+ %>
+<p>
+
+</p>
+<%= link_to 'Next Question', User.find(@cardstate.user_id) %>
 <p>
   <strong>User:</strong>
   <%= @cardstate.user_id %>

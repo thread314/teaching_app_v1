@@ -10,12 +10,17 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
+    #flash.notice = "The answer was #{@currentcard["correct_answer"]}!"
+
     #Check if user has studied today yet, if not update lastreviewed
+    #answer = params.answer
     if @user.lastreviewed.nil? || @user.lastreviewed != Date.today
         @user.lastreviewed = Date.today
         @user.save
 
+=begin 
         #Determine how many new cards need to be added
+        #This isn't working, if there are any existing new cards in the users cardstates, it enters every single card to their cardstates for some reason. Non-essential feature, can fix later
         newcardsneeded = 6
         @user.cardstates.each do |card|
             if card.due.nil?
@@ -25,6 +30,7 @@ class UsersController < ApplicationController
         if newcardsneeded < 0
             newcardsneeded = 0
         end
+=end
 
         #Fetch the new cards to be added
         currentcardsarray = []
@@ -37,7 +43,7 @@ class UsersController < ApplicationController
         end
         unreviewedcards = []
         unreviewedcards = allcardsarray - currentcardsarray
-        newcardstoadd = unreviewedcards.shuffle[0..newcardsneeded-1]
+        newcardstoadd = unreviewedcards.shuffle[0..5]
 
         #Add cardstates for the new cards to the user
         newcardstoadd.each do |card|
@@ -48,13 +54,21 @@ class UsersController < ApplicationController
         end
     end
 
-    #
+    #Setting the next card
     a = @user
-    @cardsforreview = []
-    a.cardstates.each do |card|
-      if card.due.nil? || card.due <= Date.today
-          @cardsforreview.push(card)
-      end
+    cardsforreview = []
+    a.cardstates.each do |cardstate|
+        if cardstate.due.nil? || cardstate.due <= Date.today
+            cardsforreview.push(cardstate)
+        end
+    end
+    if cardsforreview.empty? 
+        @currentcard = {}
+    else
+        nextcardstate = cardsforreview.sample
+        nextcard = nextcardstate.card
+        ar = [nextcard.term_a,nextcard.term_b].shuffle
+        @currentcard = {"first_term" => ar[0], "second_term" => ar[1], "cardstate_id" => nextcardstate.id}
     end
   end
 

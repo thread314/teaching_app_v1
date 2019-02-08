@@ -1,8 +1,64 @@
-#Check if user has studied today yet, if not update lastreviewed
-@user = User.last
-if @user.lastreviewed.nil? || @user.lastreviewed != Date.today
-    
+#These lines unnecessary
+@cardstate = Cardstate.first
+params = {"answer" => 36}
 
+
+#start from here
+d = Card.find(@cardstate.card_id) 
+puts d
+
+=begin 
+correct_answer = d["term_a"] * d["term_b"]
+#If user got the answer right
+if params["answer"] == correct_answer
+    if @cardstate.delay.nil?
+        @cardstate.delay = 0.5
+        @cardstate.save
+    else
+        @cardstate.delay *= 2
+        puts "delay is #{@cardstate.delay}"
+        @cardstate.due = Date.today + @cardstate.delay
+        puts "due is #{@cardstate.due}"
+        @cardstate.save
+    end
+#If user did not get the answer right
+else
+    puts "the answer was wrong"
+    @cardstate.due = ""
+    @cardstate.delay = ""
+    @cardstate.save
+end
+ =end
+
+=begin 
+#DELETE THIS LINE!! - FOR SCRATCH ONLY
+@user = User.first
+
+
+a = @user
+cardsforreview = []
+a.cardstates.each do |cardstate|
+    if cardstate.due.nil? || cardstate.due <= Date.today
+        cardsforreview.push(cardstate)
+    end
+end
+if cardsforreview.empty? 
+    @currentcard = {}
+else
+    nextcardstate = cardsforreview.sample
+    nextcard = nextcardstate.card
+    ar = [nextcard.term_a,nextcard.term_b].shuffle
+    @currentcard = {"first_term" => ar[0], "second_term" => ar[1], "correct_answer" => ar[0] * ar[1], "cardstate_id" => nextcardstate.id}
+end
+ =end
+
+
+
+
+
+=begin
+#Check if user has studied today yet, if not update lastreviewed
+if @user.lastreviewed.nil? || @user.lastreviewed != Date.today
     @user.lastreviewed = Date.today
     @user.save
 
@@ -31,20 +87,15 @@ if @user.lastreviewed.nil? || @user.lastreviewed != Date.today
     unreviewedcards = allcardsarray - currentcardsarray
     newcardstoadd = unreviewedcards.shuffle[0..newcardsneeded-1]
     
-    puts "Here they are!"
-    puts newcardstoadd
-
-=begin     #Add cardstates for the new cards to the user
+    #Add cardstates for the new cards to the user
     newcardstoadd.each do |card|
         newcards = Cardstate.new
         newcards.user_id = @user.id
         newcards.card_id = card
         newcards.save
     end 
-=end
-
 end
-
+=end
 
 
 =begin 

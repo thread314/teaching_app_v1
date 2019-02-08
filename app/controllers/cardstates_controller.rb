@@ -1,11 +1,6 @@
 class CardstatesController < ApplicationController
   before_action :set_cardstate, only: [:show, :edit, :update, :destroy]
 
-  def study
-  end
-
-
-
   # GET /cardstates
   # GET /cardstates.json
   def index
@@ -15,6 +10,7 @@ class CardstatesController < ApplicationController
   # GET /cardstates/1
   # GET /cardstates/1.json
   def show
+
   end
 
   # GET /cardstates/new
@@ -47,6 +43,7 @@ class CardstatesController < ApplicationController
   def update
     respond_to do |format|
       if @cardstate.update(cardstate_params)
+
         format.html { redirect_to @cardstate, notice: 'Cardstate was successfully updated.' }
         format.json { render :show, status: :ok, location: @cardstate }
       else

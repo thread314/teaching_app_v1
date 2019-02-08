@@ -1,4 +1,4 @@
-<p id="notice">Time to study!<%= notice %></p>
+<H1>Time to study!</H1>
 
 <p>
   <%= @user.name %>
@@ -12,15 +12,23 @@
 <p>
   <strong>Study this</strong>
   <%= 
-  if @cardsforreview.empty?
+  if @currentcard.empty?
     "You're all finished with study for today."
   else
-    a = @cardsforreview.sample.card
-    ar = [a.term_a,a.term_b].shuffle
-    "#{ar[0]} X #{ar[1]}"
+    "#{@currentcard["first_term"]} X #{@currentcard["second_term"]}"
   end
-
-  %> 
+  %>
 </p>
+
+
+<!-- The form starts here -->
+
+<%= form_tag("/cardstates/" + @currentcard["cardstate_id"].to_s, method: "get") do %>
+  <%= label_tag(:q, "Answer") %>
+  <%= number_field_tag(:answer) %>
+  <%= submit_tag("Submit") %>
+<% end %>
+
+
 
 <%= link_to 'Back', users_path %>
