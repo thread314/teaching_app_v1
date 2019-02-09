@@ -15,8 +15,6 @@ class UsersController < ApplicationController
     #Check if user has studied today yet, if not update lastreviewed
     #answer = params.answer
     if @user.lastreviewed.nil? || @user.lastreviewed != Date.today
-        @user.lastreviewed = Date.today
-        @user.save
 
 =begin 
         #Determine how many new cards need to be added
@@ -70,11 +68,14 @@ class UsersController < ApplicationController
         ar = [nextcard.term_a,nextcard.term_b].shuffle
         @currentcard = {"first_term" => ar[0], "second_term" => ar[1], "cardstate_id" => nextcardstate.id}
     end
+    @user.lastreviewed = Date.today
+    @user.save
   end
 
   # GET /users/new
   def new
     @user = User.new
+    @deleteme = "data"
   end
 
   # GET /users/1/edit

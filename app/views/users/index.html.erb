@@ -7,7 +7,7 @@
     <tr>
       <th>Name</th>
       <th>Email</th>
-      <th>Lastreviewed</th>
+      <th>Last Study Session</th>
       <th colspan="4"></th>
     </tr>
   </thead>
@@ -18,9 +18,9 @@
         <td><%= user.name %></td>
         <td><%= user.email %></td>
         <td><%= user.lastreviewed %></td>
-        <td><%= link_to 'Study', user %></td>
-        <td><%= link_to 'Edit', edit_user_path(user) %></td>
-        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td> <strong> <%= link_to 'Study Now', user %> </strong> </td>
+        <!-- <td><%= link_to 'Edit', edit_user_path(user) %></td> -->
+        <!-- <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td> -->
       </tr>
     <% end %>
   </tbody>
@@ -28,8 +28,8 @@
 
 <br>
 
-<%= link_to 'Users', new_user_path %>
+<%= link_to 'New User', new_user_path %>
 <BR>
-<%= link_to 'Cardstates', cardstates_path %>
+<!-- <%= link_to 'Cardstates', cardstates_path %>
 <BR>
-<%= link_to 'Cards', cards_path %>
+<%= link_to 'Cards', cards_path %>-->

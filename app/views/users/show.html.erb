@@ -5,30 +5,28 @@
 </p>
 
 <p>
-  <strong>Lastreviewed:</strong>
-  <%= @user.lastreviewed %>
+  <!-- <strong>Lastreviewed:</strong> <%= @user.lastreviewed %> -->
 </p>
 
 <p>
-  <strong>Study this</strong>
-  <%= 
+  <strong> <%= 
   if @currentcard.empty?
     "You're all finished with study for today."
   else
-    "#{@currentcard["first_term"]} X #{@currentcard["second_term"]}"
+    "What is #{@currentcard["first_term"]} times #{@currentcard["second_term"]}?"
   end
-  %>
+  %> </strong>
 </p>
 
 
 <!-- The form starts here -->
-
-<%= form_tag("/cardstates/" + @currentcard["cardstate_id"].to_s, method: "get") do %>
-  <%= label_tag(:q, "Answer") %>
-  <%= number_field_tag(:answer) %>
-  <%= submit_tag("Submit") %>
+<% if !@currentcard.empty? %>
+  <%= form_tag("/cardstates/" + @currentcard["cardstate_id"].to_s, method: "get") do %>
+    <%= label_tag(:q, "Answer") %>
+    <%= number_field_tag(:answer) %>
+    <%= submit_tag("Submit") %>
+  <% end %>
 <% end %>
-
 
 
 <%= link_to 'Back', users_path %>
