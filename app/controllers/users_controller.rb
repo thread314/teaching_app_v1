@@ -10,12 +10,10 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    #flash.notice = "The answer was #{@currentcard["correct_answer"]}!"
-
     #Check if user has studied today yet, if not update lastreviewed
-    #answer = params.answer
     if @user.lastreviewed.nil? || @user.lastreviewed != Date.today
-
+      @user.update_attribute(:lastreviewed, Date.today)
+  
 =begin 
         #Determine how many new cards need to be added
         #This isn't working, if there are any existing new cards in the users cardstates, it enters every single card to their cardstates for some reason. Non-essential feature, can fix later
@@ -68,14 +66,11 @@ class UsersController < ApplicationController
         ar = [nextcard.term_a,nextcard.term_b].shuffle
         @currentcard = {"first_term" => ar[0], "second_term" => ar[1], "cardstate_id" => nextcardstate.id}
     end
-    @user.lastreviewed = Date.today
-    @user.save
   end
 
   # GET /users/new
   def new
     @user = User.new
-    @deleteme = "data"
   end
 
   # GET /users/1/edit
@@ -89,7 +84,9 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to users_path, notice: 'User was successfully created.' }
+        log_in @user
+        flash[:success] = "Welcome to the Sample App!"
+        format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new }
@@ -130,6 +127,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :email, :lastreviewed)
+      params.require(:user).permit(:name, :email, :password, :password_confirmation)
     end
 end
