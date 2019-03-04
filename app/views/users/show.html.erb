@@ -13,7 +13,8 @@
   if @currentcard.empty?
     "You're all finished with study for today."
   else
-    "What is #{@currentcard["first_term"]} times #{@currentcard["second_term"]}?"
+    operatoroptions = ["x","times","multiplied by","lots of"]
+    "What is #{@currentcard["first_term"]} #{operatoroptions.sample} #{@currentcard["second_term"]}?"
   end
   %> </strong>
 </p>
