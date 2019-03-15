@@ -29,8 +29,11 @@
   <% end %>
 <% end %>
 
-
-<%= link_to 'Back', users_path %>
+<p>
+<%= link_to 'Back', '/home' %>
+</p>
+<p>
 <% if logged_in? %>
   <%= link_to "Log out", logout_path, method: :delete %>
 <% end %>
+</p>

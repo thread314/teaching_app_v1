@@ -1,0 +1,11 @@
+<h1>Welcome to the Ebbing House</h1>
+
+<p>Welcome, <%= @current_user.name %>!</p>
+
+<p>You last came to study  <%= (Date.today - @current_user.lastreviewed).to_i %> days ago!</p>
+
+<p>You have <%= @cardsforreview.length %> cards to study today!</p>
+
+<p><%= link_to 'Study Now!', @current_user %></p>
+
+<p><%= link_to "Log out", logout_path, method: :delete %></p>

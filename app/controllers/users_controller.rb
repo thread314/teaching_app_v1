@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :logged_in_user, only: [:edit, :update, :show]
+  before_action :correct_user,   only: [:edit, :update, :show]
 
   # GET /users
   # GET /users.json
@@ -7,65 +9,18 @@ class UsersController < ApplicationController
     @users = User.all
   end
 
-  # GET /users/1
-  # GET /users/1.json
+  def home
+    current_user
+    if @current_user.lastreviewed.nil? || @current_user.lastreviewed != Date.today
+      addnewcards
+    end
+    
+    setnextcard
+  end
+
   def show
-    #Check if user has studied today yet, if not update lastreviewed
-    if @user.lastreviewed.nil? || @user.lastreviewed != Date.today
-      @user.update_attribute(:lastreviewed, Date.today)
-  
-=begin 
-        #Determine how many new cards need to be added
-        #This isn't working, if there are any existing new cards in the users cardstates, it enters every single card to their cardstates for some reason. Non-essential feature, can fix later
-        newcardsneeded = 6
-        @user.cardstates.each do |card|
-            if card.due.nil?
-            newcardsneeded = newcardsneeded - 1
-            end
-        end
-        if newcardsneeded < 0
-            newcardsneeded = 0
-        end
-=end
 
-        #Fetch the new cards to be added
-        currentcardsarray = []
-        @user.cardstates.each do |card|
-            currentcardsarray.push(card.card_id)
-        end
-        allcardsarray = []
-        Card.all.each do |card|
-            allcardsarray.push(card.id)
-        end
-        unreviewedcards = []
-        unreviewedcards = allcardsarray - currentcardsarray
-        newcardstoadd = unreviewedcards.shuffle[0..5]
-
-        #Add cardstates for the new cards to the user
-        newcardstoadd.each do |card|
-            newcards = Cardstate.new
-            newcards.user_id = @user.id
-            newcards.card_id = card
-            newcards.save
-        end
-    end
-
-    #Setting the next card
-    a = @user
-    cardsforreview = []
-    a.cardstates.each do |cardstate|
-        if cardstate.due.nil? || cardstate.due <= Date.today
-            cardsforreview.push(cardstate)
-        end
-    end
-    if cardsforreview.empty? 
-        @currentcard = {}
-    else
-        nextcardstate = cardsforreview.sample
-        nextcard = nextcardstate.card
-        ar = [nextcard.term_a,nextcard.term_b].shuffle
-        @currentcard = {"first_term" => ar[0], "second_term" => ar[1], "cardstate_id" => nextcardstate.id}
-    end
+    setnextcard
   end
 
   # GET /users/new
@@ -75,6 +30,7 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+    @user = User.find(params[:id])
   end
 
   # POST /users
@@ -86,7 +42,7 @@ class UsersController < ApplicationController
       if @user.save
         log_in @user
         flash[:success] = "Welcome to the Sample App!"
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        format.html { redirect_to '/home', notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new }
@@ -123,6 +79,18 @@ class UsersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.find(params[:id])
+    end
+
+    def correct_user
+      @user = User.find(params[:id])
+      redirect_to(root_url) unless current_user?(@user)
+    end
+
+    def logged_in_user
+      unless logged_in?
+        flash[:danger] = "Please log in."
+        redirect_to login_url
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
