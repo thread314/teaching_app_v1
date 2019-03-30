@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_04_015900) do
+ActiveRecord::Schema.define(version: 2019_03_15_071408) do
 
   create_table "cards", force: :cascade do |t|
     t.integer "term_a"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 2019_03_04_015900) do
     t.datetime "updated_at", null: false
     t.date "lastreviewed"
     t.string "password_digest"
+    t.boolean "admin", default: false
   end
 
 end

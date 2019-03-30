@@ -5,6 +5,7 @@
 <table>
   <thead>
     <tr>
+      <th>Carstate ID</th>
       <th>User</th>
       <th>Card</th>
       <th>Delay</th>
@@ -16,6 +17,7 @@
   <tbody>
     <% @cardstates.each do |cardstate| %>
       <tr>
+        <td><%= cardstate.id %></td>
         <td><%= cardstate.user_id %></td>
         <td><%= cardstate.card_id %></td>
         <td><%= cardstate.delay %></td>
